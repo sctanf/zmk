@@ -22,7 +22,7 @@ LOG_MODULE_DECLARE(zmk, CONFIG_ZMK_LOG_LEVEL);
 #include <zmk/activity.h>
 #include <zmk/workqueue.h>
 
-static uint8_t last_state_of_charge = 0;
+static uint8_t last_state_of_charge = 255;
 
 uint8_t zmk_battery_state_of_charge(void) { return last_state_of_charge; }
 
