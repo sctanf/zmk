@@ -30,14 +30,17 @@ int battery_channel_get(const struct battery_value *value, enum sensor_channel c
 }
 
 uint8_t lithium_ion_mv_to_pct(int16_t bat_mv) {
-    // Simple linear approximation of a battery based off adafruit's discharge graph:
-    // https://learn.adafruit.com/li-ion-and-lipoly-batteries/voltages
-
-    if (bat_mv >= 4200) {
+    if (bat_mv >= 4150) {
         return 100;
-    } else if (bat_mv <= 3450) {
+    } else if (bat_mv > 4025) {
+        return (bat_mv - 4025) * 5.0 / (4150.0 - 4025.0) + 95;
+    } else if (bat_mv > 3650) {
+        return (bat_mv - 3650) * 65.0 / (4025.0 - 3650.0) + 30;
+    } else if (bat_mv > 3400) {
+        return (bat_mv - 3400) * 25.0 / (3650.0 - 3400.0) + 5;
+    } else if (bat_mv > 3200) {
+        return (bat_mv - 3200) * 5.0 / (3400.0 - 3200.0);
+    } else {
         return 0;
     }
-
-    return bat_mv * 2 / 15 - 459;
 }
